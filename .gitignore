@@ -1,0 +1,6 @@
+# Exclude .log, .pdf, .aux, .gz files
+
+*.pdf
+*.log
+*.aux
+*.gz

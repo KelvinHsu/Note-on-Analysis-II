@@ -1,0 +1,305 @@
+%This is a sample LaTeX input file.  (Version of 11 April 1994.)
+%
+% A '%' character causes TeX to ignore all remaining text on the line,
+% and is used for comments like this one.
+
+\documentclass[12pt]{article}
+
+\title{\textbf{Notes on Analysis II}}  % Declares the document's title.
+\author{\emph{Kelvin Yueh-Sheng Hsu}\\\emph{Professor: Chih-Chung Chang}}      % Declares the author's name.
+\date{\today}      % Deleting this command produces today's date.
+
+\usepackage[a4paper, margin=2 cm]{geometry}
+\usepackage{sectsty, titling, amsmath, amsthm, amssymb, booktabs, diagbox}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[thm]
+\newtheorem{defn}{Definition}[section]
+\newtheorem{ex}{Example}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem*{q}{Frage}
+
+\renewcommand{\vec}[1]{\mathbf{#1}} % Bold face vector.
+\newcommand{\limn}{\lim_{n \rightarrow \infty}}
+\newcommand{\fseq}{$\{f_n(x)\}$}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+%\allsectionsfont{\sffamily}
+\setlength{\droptitle}{-5em}
+
+\begin{document}             % End of preamble and beginning of text.
+\maketitle                   % Produces the title.
+
+\section{Sequences and Series of Functions}
+\subsection{Uniform convergence and what it promises.}
+\begin{defn}
+Let $\{f_n\}$ be a sequence of functions defined on a subset $E$ of a metric space. Suppose that $\forall x \in E, \{f_n\}$ converges. Then define $f(x) = \lim_{n \rightarrow \infty} f(x), x \in E$. We say that $\{f_n\}$ on $E$ to $f$ \textbf{piecewisely}. The convergence of $\sum f_n$ can be defined in a similar manner.
+\end{defn}
+
+The center of the problems being dealt with in this chapter are, whether the following three equalities hold:
+\begin{itemize}
+\item $\displaystyle{\lim_{x \rightarrow a}\limn f_n(x) = \limn\lim_{x \rightarrow a} f_n(x)}$
+\item $\displaystyle{\frac{d}{dx} \limn f_n(x) = \limn \frac{d}{dx} f_n(x)}$
+\item $\displaystyle{ \int \limn f_n(x) = \limn \int f_n(x) }$
+\end{itemize}
+
+\begin{ex}
+	\begin{align*}
+	f_n(x) &= x^n, ~~~~~ x \in [0, 1] &\text{(Continuous)} \\
+	\limn f_n(x) &=
+		\begin{cases}
+		0, & x \in [0, 1)\\
+		1, & x = 1
+		\end{cases}
+		&\text{(Discontinuous)}\\
+	\end{align*}
+\end{ex}
+\begin{ex}
+	Let $\{q_n\}$ be a sequence of all rational numbers in $[0, 1]$. Define \\
+	$g_n = 
+	\begin{cases}
+		1, & x \in \{q_1, q_2, \cdots, q_n\} \\
+		0, & \text{otherwise}
+	\end{cases}$ and observe that, $\displaystyle{\limn g_n = 
+	\begin{cases}
+		1, & x \in \mathbb{Q} \cap [0, 1] \\
+		0, & x \notin \mathbb{Q} \cap [0, 1]
+	\end{cases}}$.
+	The above shows $g_n(x)$ is Darboux integrable while it's limit $g(x)$ is not.
+\end{ex}
+\begin{ex}
+	Let $h_n =
+	\begin{cases}
+		n, & x \in (0, 1/n] \\
+		0, & x \in (1/n, 1]
+	\end{cases}$
+	, and $\limn h_n = 0, \forall x \in (0, 1]$. Also,
+	\[ \limn \int_{0}^{1} h_n = 1 \neq 0 = \int_{0}^{1} \limn f_n. \]
+\end{ex}
+\begin{ex} Let $u_n = x^n/n$ on $[0, 1]$. \[ \limn u_n'(x) = \limn x^{n-1} = 
+	\begin{cases}
+		0, & x \in [0, 1]\\
+		1, & x = 1
+	\end{cases}\], while \[ \frac{d}{dx} \limn \frac{x^n}{n} = \frac{d}{dx} 0 = 0. \]
+\end{ex}
+
+Judging from these examples, we conclude that all these three wanted properties posed in this chapter's main problem are in general not guaranteed by the definition of \emph{pointwise convergence}, which invokes the following stronger version.
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Some basics about uniform convergence %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{defn}
+	$\{f_n\}$ is said to converge uniformly on $E$ to $f$, if $\forall \epsilon > 0, \exists N \in \N \ni  |f_n(x) - f(x)| < \epsilon ~~\forall n \geq N$. That is to say, the "difficulty" or "pace" for $\{f_n\}$ to converge is uniform, i.e. $N(\epsilon) = \text{const.} ~~\forall x$. The situation of $\sum f_n$ can be defined similarly. 
+\end{defn}
+
+\begin{thm}\label{thm:uni_cauchy}\textbf{Cauchy's criterion for sequences of functions.}
+	The sequence \fseq converges uniformly on $E$ if and only if $\forall \epsilon > 0, \exists N \in \N \ni \forall n, m \geq N \text{ and } x \in E$,
+	\begin{equation}
+		|f_n - f_m| < \epsilon.
+		\label{eq:cauchy}
+	\end{equation}
+\end{thm}
+\begin{proof}
+	Suppose \fseq converges uniformly on $E$ to some $f$. Let $\epsilon > 0, \exists N \in \mathbb{E} \ni \forall n > N \text{ and } x \in E$, \[ |f_n - f| < \frac{\epsilon}{2}. \] Therefore, \[ |f_n - f_m| \leq |f_n - f| + |f - f_m| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon \], which suggests \fseq statisfies the Cauchy criterion.
+	
+	Conversely, suppose (\ref{eq:cauchy}) holds. By (\ref{eq:cauchy}), for each $x$, \fseq is a Cauchy sequence and thus converges for all $x \in E$. Define $f = \limn f_n$. Now it is only left to check whether the sequence converges uniformly. Given an arbitrarily $\epsilon > 0$, from (\ref{eq:cauchy}) we have $|f_n - f_m| < \epsilon$ if $n, m > N$ for some $N$ sufficiently large. Letting $ m \rightarrow \infty $, one can derive \[|f_n - f| < \epsilon \text{ if } n > N,\] where $N$ fixed for each $x$. Hence proved. 
+\end{proof}
+
+\begin{q}
+	Why $\lim_{m \rightarrow \infty} |f_n - f_m| = |f_n - \lim_{m \rightarrow \infty} f_m|$?
+\end{q}
+\begin{proof}[Antwort]
+	The function $g(x) = |x|$ is continuous， so we can safely exchange the order of limit and absoulte value function.
+\end{proof}
+
+\begin{thm}\label{thm:mtest}\textbf{Weierstrauss M-Test}.
+	Suppose that the sequence \fseq on $E$ satisfies $|f_n(x)| < M_n ~\forall n \text{ and } x \in E$. If $\sum M_n$ converges, then $\sum f_n$ converges uniformly.
+\end{thm}
+\begin{proof}
+	We will show that the sequence $\{s_n = \sum_{k = 1}^{n} f_k\}$ satisfies the Cauchy criterion of uniform convergence (Thm.\ref{thm:uni_cauchy}).
+	
+	Pick $\epsilon > 0, \exists N \in \N \ni \sum_{k = m+1}^{n}M_k < \epsilon$. Then the theorem is proved by \[|s_n(x) - s_m(x)| = \left|\sum_{k = m+1}^{n} f_k\right| \leq \sum_{k=m+1}^{n}|f_k| \leq \sum_{k = m+1}^{n}M_k < \epsilon. \]
+\end{proof}
+
+\begin{ex}
+	\[\sum_{n = 1}^{\infty} \frac{\sin(nx)}{n^p}, ~p>1.\] Since $|\sin(nx)/n^p| \leq 1/n^p, ~\forall x \in \R$, and $\sum_n 1/n^p < \infty$ when $p < 1$. By the M-test, $\sum \frac{\sin(nx)}{n^p}$ converges uniformly on $\R$.
+\end{ex}
+\begin{ex}
+	Suppose $\sum a_n(x-x_0)^n$ has a positive radius of convergence $r$, and let $0 < \rho < r$. Then the power series converges uniformly in the closed interval $|x-x_0| \leq \rho$. (The series may not converge uniformly on $(x_0 - r, x_0 + r)$.) The promise of unif. convergence is due to the fact that $|a_n(x-x_0)^n| \leq |a_n|\rho^n ~\forall n$ and $\sum |a_n|\rho^n$ converges.
+\end{ex}
+
+\begin{q}
+	Why the series $\sum |a_n|\rho^n$ converges?
+\end{q}
+\begin{proof}[Antwort]
+	The radius of convergence is calculated by the root test or ration test, in which we first take the absolute value of each term of the series and then apply the methods. So we can comfortably use the properties of absoulte convergence \emph{inside} (i.e. not include the boundary) the region of convergence.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%% The effect of uniform convergent %%%%%%%%%%%%%%%%%%%%%%%
+\begin{thm}\label{thm:lim_exchange}
+	Suppose $f_n \rightarrow f$ uniformly on a metric space $E$ and $x$ is a limit point of $E$, and define $a_n = \lim_{t \rightarrow x} f_n(t)$. Then $\{ a_n \}$ converges and \[\lim_{t \rightarrow x} f(t) = \lim_{t \rightarrow x}\lim_{n \rightarrow \infty} f_n(t) = \lim_{n \rightarrow \infty}\lim_{t \rightarrow x} f_n(t) = \lim_{n \rightarrow \infty} a_n.\]
+\end{thm}
+\begin{proof}
+	
+\end{proof}
+
+\begin{ex}
+	
+\end{ex}
+
+\begin{thm}
+	If \fseq is a sequence of continuous functions on $E$ and $f_n \rightarrow f$ uniformly, then $f$ is continuous on $E$.
+\end{thm}
+\begin{proof}
+	
+\end{proof}
+
+\begin{thm}
+	(Exercise) If \fseq is a sequence of a \textbf{uniformly continuous}\footnote{If $f$ is uniformly continuous on $E$, then given $\epsilon > 0, ~ \exists \delta > 0 \ni |f(s) - f(t)| < \epsilon$ whenever $|s - t| < \delta, ~ \forall s, t \in E $.} functions on $E$ and $f_n \rightarrow f$ uniformly, then $f$ is \textbf{uniformly continuous}. 
+\end{thm}
+\begin{proof}
+	
+\end{proof}
+
+\begin{thm}
+	Let $\alpha$ be a monotonically increasing function on $[a, b]$. Suppose $f_n \in \mathcal{D}(\alpha, [a, b])$ for $n = 1, 2, \dots$ and that $f_n \rightarrow f$ uniformly on $[a, b]$. Then $f \in \mathcal{D}(\alpha, [a, b])$ and \[\int_a^b f d\alpha = \lim_{n \rightarrow \infty} \int_a^b f_n d\alpha.\]
+\end{thm}
+\begin{proof}
+	
+\end{proof}
+
+\begin{thm}
+	Suppose \fseq is a sequence of differentiable functions on $[a, b]$ such that it converges at some $x_0 \in [a, b]$. If $\{f'_n\}$ converges uniformly, then \fseq converges uniformly on $[a, b]$, to a function $f$, and \[f'(x) = \lim_{n \rightarrow \infty} f'_n(x), ~ a < x < b.\]
+\end{thm}
+\begin{proof}
+	Let $\epsilon > 0$ be given. There exists $N \in \N$ such that if $n, m \geq N$, then \[|f_n(x) - f_m(x)| < \epsilon/2,\] and \[|f_n'(x) - f'(x)| < \epsilon/2(b-a).\]
+	
+	We first prove that \fseq converges uniformly on $[a, b]$. Suppose $n, m > N$ and $x \in [a, b]$. Consider $g = f_n - f_m$. By the mean value theorem, there is a $\theta$ somewhere between $x$ and $x_0$ such that $g'(\theta) = \left( g(x) - g(x_0) \right) (x-x_0)$. Note that $g'(\theta) < \epsilon/2(b-a)$. Therefore,
+	\begin{align*}
+		|f_n - f_m| &= \left|(f_n - f_m)(x) - (f_n - f_m)(x_0) + (f_n - f_m)(x_0) \right| \\
+			&\leq |g(x) - g(x_0)| + |g(x_0)| \\
+			&< (x - x_0)g'(\theta) + \epsilon/2 \\
+			&< (b-a) \frac{\epsilon}{2(b-a)} + \epsilon/2 = \epsilon.
+	\end{align*}
+	
+	Secondly, for the same $n, m$ and $g$, let $\phi_n(t) = \frac{f_n(t)-f_n(x)}{t-x}$, and $\phi(t) = \frac{f(t) - f(x)}{t-x}$.
+	\[
+		|\phi_n(t) - \phi_m(t)| = \left| \frac{(f_n - f_m)(t) - (f_n - f_m)(x)}{t-x}\right| = \left| \frac{g(t) - g(x)}{t-x} \right| = |g'(\omega)| \\ < \frac{\epsilon}{2(b-a)},
+	\] for some $\omega$ between $t$ and $x$. Hence $\phi_n \rightarrow \phi$ uniformly. Thanks to theorem \ref{thm:lim_exchange}, \[f'(x) = \lim_{t \rightarrow x} \phi(t) = \lim_{t \rightarrow x} \lim_{n \rightarrow \infty} \phi_n(t) = \lim_{n \rightarrow \infty} \lim_{t \rightarrow x} \phi_n(t) = \lim_{n \rightarrow \infty} f_n'(x). \]
+	
+\end{proof}
+
+\begin{thm}
+	
+\end{thm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%% Determine if a sequence converges uniformly. %%%%%%%%%%%%%%%%%%
+\begin{thm} \label{thm:dini}
+	\textbf{Dini's theorem.} Suppose $K$ is a compact set, and
+	\begin{enumerate}
+		\item \fseq is a sequence of continuous functions on $K$.
+		\item \fseq converges pointwise to a continuous function $f$ on $K$.
+		\item $f_n(x) \geq f_{n+1}(x) ~ \forall x \in K, n = 1, 2, \dots$.
+	\end{enumerate}
+	Then $f_n \rightarrow f$ uniformly on $K$.
+\end{thm}
+\begin{proof}
+	
+\end{proof}
+
+\begin{thm}
+	\textbf{Dirichlet's Test.}
+\end{thm}
+
+\begin{thm}
+	\textbf{Abel's Test.}
+\end{thm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%% Topological space of continuous functions %%%%%%%%%%%%%%%%%
+\begin{defn}\label{def:sup_norm}
+	Let $X$ be a metric space and $\mathcal{C}(X)$ be the set of all complex-valued, continuous, bounded functions on $X$. To make it a metric space, we should define a norm for $\mathcal{C}(X)$. That is, for each $f  \in \mathcal{C}(X)$, \[ \lVert f \rVert_{\infty} = \sup_{x \in X} |f(x)|, \] which is called the uniform norm or supremum norm. Consequently, we have a metric defined as \[d(f, g) = \lVert f - g \rVert_{\infty}.\]
+\end{defn}
+
+With defintion \ref{def:sup_norm}, we can rephrase the above condition for a sequence of functions to converge uniformly. If $f_n, f \in \mathcal{C}(X)$, then
+\begin{align*}
+	&f_n \rightarrow f \text{ on } \mathcal{C}(X)\\
+	\iff &\forall \epsilon > 0, ~ \exists N \in \N ~\ni d(f_n, f) < \epsilon \\ 
+	\iff &\sup_{x \in X} |f_n - f| < \epsilon, \forall n \geq N \\
+	\iff &f_n \rightarrow f \text{  uniformly on } X.
+\end{align*}
+
+\begin{thm}
+	The metric space $\mathcal{C}(X)$ equipped with the uniform norm is complete.
+\end{thm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Equicontinous families of functions}
+\begin{defn}
+	Let \fseq be a sequence of functions on $E$.
+	\begin{itemize}
+		\item \fseq is said to be \textbf{pointwise bounded} if \fseq is bounded $\forall x \in E$, i.e. there is  a finite-valued function $\phi(x)$ in $E$ such that $|f_n(x)| < \phi(x) ~\forall n \text{ and } x \in E$.
+		\item \fseq is said to be \textbf{uniformly bounded} if there exists $M \in \N$ such that $|f_n(x)| \leq M ~\forall x\in E, n$.
+	\end{itemize}
+\end{defn}
+\begin{ex}
+	
+\end{ex}
+
+\section{Some Special Functions}
+
+
+
+\section{Functions of Several Variables}
+\begin{defn}
+	$A: X \rightarrow Y$ is  a linear transformation if \[A(x + y) = Ax + Ay, \text{ and  } A(cx)=cAx,\] for $x \in X$ and $c$ a scalar.
+\end{defn}
+
+\begin{defn}
+	$L(X, Y)$ denotes the linear space formed by all linear transformation from $X$ into $Y$. Linear transformations from $X$ into itself is called linear operators.
+\end{defn}
+
+Note that there are some facts concerning linear transformations, $A \in L(X, Y)$:
+\begin{enumerate}
+	\item $A\textbf{x} = \textbf{0} \iff \textbf{x} = \textbf{0}$.
+	\item $A$ is completely determined by its action on any basis of $X$.
+	\item If $A$ is one-to-one and onto, one has $A^{-1} \in L(X, Y)$.
+	\item Linear transformations preserve linear dependencies.
+	\item The range $\mathsf{R}(A)$ and null space $\mathsf{N}(A)$ are linear spaces.
+	\item If $\dim(X) = n < \infty$, then $\dim(\mathsf{R}(A)) \leq n$.
+	\item if $\dim(X) = n$ and $A^{-1}$ exists, then $\dim(\mathsf{R}(A^{-1}))$.
+\end{enumerate}
+
+\begin{thm}
+	A linear transformation $A$ in a finite dimensional vector space is one-to-one if and only if it's onto.
+\end{thm}
+
+\begin{defn}
+	Let $X$ be a vector space with a norm $\norm{\cdot}: X \rightarrow \R$ such that
+	\begin{enumerate}
+		\item $\norm{\vec{x}} \geq 0, and \norm{\vec{x}} = 0 \iff \vec{x} = 0$;
+		\item $\norm{\vec{x_1} + \vec{x_2}} \leq \norm{\vec{x_1}} + \norm{\vec{x_2}}$;
+		\item $\norm{c\vec{x}} = |c| \norm{\vec{x}}$.
+	\end{enumerate}
+	Then $(X, \norm{\cdot})$ is called a normed vector space, and consequently a topology.
+\end{defn}
+
+\begin{defn}
+	Let $X$ and $Y$ be normed vector space. For $A \in L(X, Y)$, define \[\norm{A} = \sup_{\norm{\vec{x}} \leq 1} \norm{A\vec{x}} = \sup_{\norm{\vec{x}} = 1} \norm{A\vec{x}}.\] Or, one can write \[\norm{A} =  \sup_{\vec{x} \in X} \norm{A\frac{\vec{x}}{\norm{\vec{x}}}}.\]
+\end{defn}
+
+\begin{thm}
+	A bunch of results comming from linear algebra and normed vector spaces:
+	\begin{enumerate}
+		\item $B(X, Y)$ denotes the space consisting of bounded linear transformations. If $A \in B(X, Y)$, then $A$ is uniformly continuous.
+		\item Let $\{u_1, u_2, \dots, u_n \}$ be a basis of $X$, then for all scalars $\xi_i, i=1,2,\dots, n$, there exists $\delta > 0$ such that \[\norm{\sum_{i = 1}^{n} \xi_i u_i} \geq \delta \sum_{i = 1}^{n}|\xi_i|.\] That is to say, one cannot represent a small vector by large scalars.
+		\item 
+	\end{enumerate}
+\end{thm}
+
+\end{document}               % End of document.
+
+
