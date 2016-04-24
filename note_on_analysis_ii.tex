@@ -288,15 +288,17 @@ Note that there are some facts concerning linear transformations, $A \in L(X, Y)
 \end{defn}
 
 \begin{defn}
-	Let $X$ and $Y$ be normed vector space. For $A \in L(X, Y)$, define \[\norm{A} = \sup_{\norm{\vec{x}} \leq 1} \norm{A\vec{x}} = \sup_{\norm{\vec{x}} = 1} \norm{A\vec{x}}.\] Or, one can write \[\norm{A} =  \sup_{\vec{x} \in X} \norm{A\frac{\vec{x}}{\norm{\vec{x}}}}.\]
+	Let $X$ and $Y$ be normed vector space. For $A \in L(X, Y)$, define \[\norm{A} = \sup_{\norm{\vec{x}} \leq 1} \norm{A\vec{x}} = \sup_{\norm{\vec{x}} = 1} \norm{A\vec{x}}.\] Or, one can write \[\norm{A} =  \sup_{\vec{x} \in X} \norm{A\frac{\vec{x}}{\norm{\vec{x}}}}.\] On the other hand, a complete normed vector space is called a \textbf{Banach space}.
 \end{defn}
 
 \begin{thm}
-	A bunch of results comming from linear algebra and normed vector spaces:
+	A bunch of important results of linear algebra and normed vector spaces:
 	\begin{enumerate}
 		\item $B(X, Y)$ denotes the space consisting of bounded linear transformations. If $A \in B(X, Y)$, then $A$ is uniformly continuous.
 		\item Let $\{u_1, u_2, \dots, u_n \}$ be a basis of $X$, then for all scalars $\xi_i, i=1,2,\dots, n$, there exists $\delta > 0$ such that \[\norm{\sum_{i = 1}^{n} \xi_i u_i} \geq \delta \sum_{i = 1}^{n}|\xi_i|.\] That is to say, one cannot represent a small vector by large scalars.
-		\item 
+		\item If $X$ is finite dimensional, then any $A \in L(X, Y)$ is bounded.
+		\item Every finite-dimensional normed vector space is complete (and hence a Banach space).
+		\item Any two norms, say $\norm{\cdot}$ and $\norm{\cdot}_{o}$, on $X$ are called equivalent if there are $a, b > 0$ such that \[a \norm{x}_o < \norm{x} < b \norm{x}_o, \] for all $x \in X$.
 	\end{enumerate}
 \end{thm}
 
